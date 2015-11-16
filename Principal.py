@@ -3,6 +3,7 @@
 import pilasengine
 import time
 
+a=3
 pilas = pilasengine.iniciar()
 
 mapa = pilas.actores.MapaTiled('plataformas.tmx', densidad=0,
@@ -53,9 +54,14 @@ class Enemigo(pilasengine.actores.Actor):
             self.direccion=-1
             self.espejado = True
         self.x+=self.direccion * 5  
-    def largar(self):
-        lanzador.disparar()
         
+class MiMunicion(pilasengine.actores.Actor):
+    def iniciar(self):
+        self.imagen= "Bala.png"
+        self.espejado=True
+        
+pilas.actores.vincular(MiMunicion)
+         
         
 #Esta clase crea al Actor   
 class Principal(pilasengine.actores.Actor):
@@ -85,32 +91,50 @@ class Principal(pilasengine.actores.Actor):
                 self.hacer("SaltarUnaVez")
     
 def victoria(personaje, lanzador):
-    intro = pilas.musica.cargar("hola.mp3")
+    intro = pilas.musica.cargar("Hola.mp3")
     intro.reproducir(repetir=True)
     
-
-
-lanzador= Enemigo(pilas)
-lanzador.escala_x= .7
-lanzador.escala_y= .7
-lanzador.y=50
-lanzador.x=150
-    
-personaje = Principal(pilas)
-personaje.escala_x = .3
-personaje.escala_y = .3
-
-pilas.colisiones.agregar(personaje, lanzador, victoria)
-
-lanzador.aprender("Disparar")
 
 def tirar():
     lanzador.disparar()
     return True
 
+def Perder():
+    global personaje
+    global a
+    a = a - 1
+    if a!=0:
+        if a==1:
+            pilas.avisar("Te queda "+str(a)+" vida")
+        else:
+            pilas.avisar("Te quedan "+str(a)+" vidas")
+    if (a == 0):
+        personaje.eliminar()
+        pilas.avisar("Perdiste")
+        
+
+pilas.actores.vincular(Principal)
+pilas.actores.vincular(Enemigo)
+lanzador= pilas.actores.Enemigo()
+lanzador.escala_x= .7
+lanzador.escala_y= .7
+lanzador.y=50
+lanzador.x=150
+    
+personaje = pilas.actores.Principal()
+personaje.escala_x = .3
+personaje.escala_y = .3
+personaje.radio_de_colision = personaje.escala*50
+personaje.aprender("PuedeExplotar")
+
+
+pilas.colisiones.agregar(personaje, lanzador, victoria)  
+
+lanzador.aprender("Disparar", municion="MiMunicion")
+
 pilas.tareas.agregar(0.5,tirar)
 
-lanzador.aprender("Disparar", municion="Bala")
+pilas.colisiones.agregar(lanzador, personaje, Perder)
 
 pilas.comportamientos.vincular(SaltarUnaVez)
 
