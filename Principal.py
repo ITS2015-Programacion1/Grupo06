@@ -6,9 +6,7 @@ import time
 a=3
 pilas = pilasengine.iniciar()
 
-mapa = pilas.actores.MapaTiled('plataformas.tmx', densidad=0,
-            restitucion=0, friccion=0, amortiguacion=0)
-
+fondo = pilas.actores.MapaTiled('PROGRAMA.tmx')
 
 class SaltarUnaVez(pilas.comportamientos.Comportamiento):
 
@@ -60,8 +58,6 @@ class MiMunicion(pilasengine.actores.Actor):
         self.imagen= "Bala.png"
         self.espejado=True
         
-pilas.actores.vincular(MiMunicion)
-         
         
 #Esta clase crea al Actor   
 class Principal(pilasengine.actores.Actor):
@@ -89,7 +85,9 @@ class Principal(pilasengine.actores.Actor):
             self.figura.y +=7
             if not self.saltando:
                 self.hacer("SaltarUnaVez")
-    
+ 
+        pilas.camara.x=self.x
+
 def victoria(personaje, lanzador):
     intro = pilas.musica.cargar("Hola.mp3")
     intro.reproducir(repetir=True)
@@ -105,16 +103,17 @@ def Perder():
     a = a - 1
     if a!=0:
         if a==1:
-            pilas.avisar("Te queda "+str(a)+" vida")
+            pilas.avisar("Te queda "+str(a)+" vida. Ponete las pilas papa")
         else:
             pilas.avisar("Te quedan "+str(a)+" vidas")
     if (a == 0):
         personaje.eliminar()
         pilas.avisar("Perdiste")
         
-
+pilas.actores.vincular(MiMunicion)
 pilas.actores.vincular(Principal)
 pilas.actores.vincular(Enemigo)
+
 lanzador= pilas.actores.Enemigo()
 lanzador.escala_x= .7
 lanzador.escala_y= .7
@@ -126,7 +125,6 @@ personaje.escala_x = .3
 personaje.escala_y = .3
 personaje.radio_de_colision = personaje.escala*50
 personaje.aprender("PuedeExplotar")
-
 
 pilas.colisiones.agregar(personaje, lanzador, victoria)  
 
