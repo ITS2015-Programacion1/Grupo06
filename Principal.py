@@ -7,6 +7,9 @@ a=3
 pilas = pilasengine.iniciar()
 
 fondo = pilas.actores.MapaTiled('PROGRAMA.tmx')
+pilas.fisica.eliminar_techo()
+pilas.fisica.eliminar_suelo()
+pilas.fisica.eliminar_paredes()
 
 class SaltarUnaVez(pilas.comportamientos.Comportamiento):
 
@@ -36,29 +39,8 @@ class SaltarUnaVez(pilas.comportamientos.Comportamiento):
                     self.cuando_termina()
                 self.receptor.saltando = False
                 return True
-                     
-#Esta clase es la del enemigo
-class Enemigo(pilasengine.actores.Actor):
-    def iniciar(self):
-        self.imagen ="Dios.jpg"
-        self.direccion=-1
-        self.espejado=True
-    def actualizar(self):
-        #Funcion que permite el movimiento de el enemigo
-        if self.x <= -300:
-            self.direccion=1
-            self.espejado = False
-        if self.x >= 300:
-            self.direccion=-1
-            self.espejado = True
-        self.x+=self.direccion * 5  
-        
-class MiMunicion(pilasengine.actores.Actor):
-    def iniciar(self):
-        self.imagen= "Bala.png"
-        self.espejado=True
-        
-        
+ 
+
 #Esta clase crea al Actor   
 class Principal(pilasengine.actores.Actor):
     def iniciar(self):
@@ -82,11 +64,40 @@ class Principal(pilasengine.actores.Actor):
             self.figura.x += 5
             
         if pilas.control.arriba:
-            self.figura.y +=7
+            self.figura.y +=6
             if not self.saltando:
                 self.hacer("SaltarUnaVez")
  
         pilas.camara.x=self.x
+
+class Golpe(pilasengine.actores.Actor):
+	def iniciar(self):
+		self.imagen="espada.png"
+		personaje.hide()
+
+
+#Esta clase es la del enemigo
+class Enemigo(pilasengine.actores.Actor):
+    def iniciar(self):
+        self.imagen ="Dios.jpg"
+        self.direccion=-1
+        self.espejado=True
+    def actualizar(self):
+        #Funcion que permite el movimiento de el enemigo
+        if self.x <= -300:
+            self.direccion=1
+            self.espejado = False
+        if self.x >= 300:
+            self.direccion=-1
+            self.espejado = True
+        self.x+=self.direccion * 5  
+        
+class MiMunicion(pilasengine.actores.Actor):
+    def iniciar(self):
+        self.imagen= "Bala.png"
+        self.espejado=True
+
+
 
 def victoria(personaje, lanzador):
     intro = pilas.musica.cargar("Hola.mp3")
@@ -103,7 +114,7 @@ def Perder():
     a = a - 1
     if a!=0:
         if a==1:
-            pilas.avisar("Te queda "+str(a)+" vida. Ponete las pilas papa")
+            pilas.avisar("Te queda "+str(a)+" vida. ENCONTRA UNA OFERTA RÁPIDO")
         else:
             pilas.avisar("Te quedan "+str(a)+" vidas")
     if (a == 0):
@@ -114,18 +125,18 @@ pilas.actores.vincular(MiMunicion)
 pilas.actores.vincular(Principal)
 pilas.actores.vincular(Enemigo)
 
-lanzador= pilas.actores.Enemigo()
-lanzador.escala_x= .7
-lanzador.escala_y= .7
-lanzador.y=50
-lanzador.x=150
-    
 personaje = pilas.actores.Principal()
 personaje.escala_x = .3
 personaje.escala_y = .3
 personaje.radio_de_colision = personaje.escala*50
 personaje.aprender("PuedeExplotar")
 
+lanzador= pilas.actores.Enemigo()
+lanzador.escala_x= .7
+lanzador.escala_y= .7
+lanzador.y=50
+lanzador.x=150
+    
 pilas.colisiones.agregar(personaje, lanzador, victoria)  
 
 lanzador.aprender("Disparar", municion="MiMunicion")
