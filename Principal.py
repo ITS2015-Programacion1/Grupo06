@@ -67,22 +67,21 @@ class Principal(pilasengine.actores.Actor):
     	"""
     	Toxicos
     	"""
-    	if self.x>-2926 and self.x< -2597 and self.y <= -183:
+    	if self.x>-2929 and self.x< -2600 and self.y <= -183:
     		print"vav"
-    	if self.x>-2166 and self.x< -1916 and self.y <= -151:
+    	if self.x>-2153 and self.x< -1970 and self.y <= -152.5:
     		print"asdc"
-    	"""
-    	if self.x>111 and self.x< 346 and self.y <= -151.6:
+    	if self.x>-1720 and self.x< -1578 and self.y <= -152.5:
     		print"qwerty"
-    	if self.x>111 and self.x< 346 and self.y <= -151.6:
+    	if self.x>-1557 and self.x< -1422 and self.y <= -152.5:
     		print"Hola"
-    	if self.x>111 and self.x< 346 and self.y <= -151.6:
-    		print"Chau"
-    	if self.x>111 and self.x< 346 and self.y <= -151.6:
+        if self.x> -1391 and self.x< -1260 and self.y <= -183:
+            print"Chau"
+    	if self.x>-1205 and self.x< -1039 and self.y <= -183:
     		print"Salvacion"
-    	if self.x>111 and self.x< 346 and self.y <= -151.6:
+    	if self.x>-1039 and self.x< -847 and self.y <= -183:
     		print"HP"
-  		"""
+        
         velocidad = 10
         salto = 10
         self.x = self.figura.x
