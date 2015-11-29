@@ -80,7 +80,7 @@ class Golpe(pilasengine.actores.Actor):
 """
 
 #Esta clase es la del enemigo
-class Enemigo(pilasengine.actores.Actor):
+class Enemigo1(pilasengine.actores.Actor):
     def iniciar(self):
         self.imagen ="primer_enemigo.png"
         self.x = -1035
@@ -103,6 +103,18 @@ class MiMunicion(pilasengine.actores.Actor):
         self.imagen= "espada.png"
         self.espejado=True
 
+class Enemigo2(pilasengine.actores.Actor):
+    def iniciar(self):
+        self.imagen ="a.png"
+        self.x = -778
+        self.y = -183
+        self.direccion=-1
+        self.espejado=True
+
+class MiMunicion2(pilasengine.actores.Actor):
+    def iniciar(self):
+        self.imagen= "index.jpeg"
+        self.espejado=True
 
 class Toxico1(pilasengine.actores.Actor):
 	def iniciar(self):
@@ -237,7 +249,11 @@ def Muere_enemigo(bonus, lanzador):
 	bonus.eliminar()
 
 def tirar():
-    lanzador.disparar()
+    enemigo.disparar()
+    return True
+
+def tirar2():
+    enemigo2.disparar()
     return True
 
 def perder():
@@ -255,7 +271,9 @@ def perder():
 
 pilas.actores.vincular(MiMunicion)
 pilas.actores.vincular(Principal)
-pilas.actores.vincular(Enemigo)
+pilas.actores.vincular(Enemigo1)
+pilas.actores.vincular(Enemigo2)
+pilas.actores.vincular(MiMunicion2)
 """
 bonus = Golpe(pilas)
 """
@@ -265,9 +283,13 @@ personaje.escala_y = .3
 personaje.radio_de_colision = personaje.escala*50
 personaje.aprender("PuedeExplotar")
 
-lanzador= pilas.actores.Enemigo()
-lanzador.escala_x= .3
-lanzador.escala_y= .3
+enemigo= pilas.actores.Enemigo1()
+enemigo.escala_x= .3
+enemigo.escala_y= .3
+
+enemigo2 = pilas.actores.Enemigo2()
+enemigo2.escala_x= .3
+enemigo2.escala_y= .3
 
 # Todas estas clases pertenecen a los obstaculos del mapa
 toxico = Toxico1(pilas)
@@ -342,11 +364,15 @@ lava5.escala_y = .0
 rectangulo = pilas.fisica.Rectangulo(0, 0, 100, 100, sensor=True, dinamica=False)
 lava5.figura_de_colision = rectangulo
 
-lanzador.aprender("Disparar", municion="MiMunicion", angulo_salida_disparo = 180 ,grupo_enemigos = personaje, cuando_elimina_enemigo = perder)
+enemigo.aprender("Disparar", municion="MiMunicion", angulo_salida_disparo = 180 ,grupo_enemigos = personaje, cuando_elimina_enemigo = perder)
 
-pilas.tareas.agregar(1.2,tirar)
+enemigo2.aprender("Disparar", municion="MiMunicion2",grupo_enemigos = personaje, cuando_elimina_enemigo = perder)
 
-pilas.colisiones.agregar(personaje, lanzador, victoria)
+pilas.tareas.agregar(1.2, tirar)
+
+pilas.tareas.agregar(0.9, tirar2)
+
+pilas.colisiones.agregar(personaje, enemigo, victoria)
 
 pilas.colisiones.agregar(personaje, toxico, volver1)
 
