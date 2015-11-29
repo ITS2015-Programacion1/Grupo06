@@ -55,31 +55,6 @@ class Principal(pilasengine.actores.Actor):
         
         
     def actualizar(self): 
-        """
-        if self.x>111 and self.x< 343 and self.y <= -180:
-    		print"Muerte"
-    	if self.x>443 and self.x< 525 and self.y <= -180:
-    		print"Tocaste"
-    	if self.x>615 and self.x< 755 and self.y <= -180:
-    		print"Me Queme"
-    	if self.x>945 and self.x< 1170 and self.y <= -180:
-    		print"Que Dolor"
-    	
-    	if self.x>-2929 and self.x< -2600 and self.y <= -151:
-    		print"vav"
-    	if self.x>-2153 and self.x< -1970 and self.y <= -152.5:
-    		print"asdc"
-    	if self.x>-1720 and self.x< -1578 and self.y <= -152.5:
-    		print"qwerty"
-    	if self.x>-1557 and self.x< -1422 and self.y <= -152.5:
-    		print"Hola"
-        if self.x> -1391 and self.x< -1260 and self.y <= -183:
-            print"Chau"
-    	if self.x>-1205 and self.x< -1039 and self.y <= -183:
-    		print"Salvacion"
-    	if self.x>-1039 and self.x< -847 and self.y <= -183:
-    		print"HP"
-"""
         velocidad = 10
         salto = 10
         self.x = self.figura.x
@@ -103,15 +78,17 @@ class Golpe(pilasengine.actores.Actor):
 		self.imagen="espada.png"
 		personaje.hide()
 """
-"""
+
 #Esta clase es la del enemigo
 class Enemigo(pilasengine.actores.Actor):
     def iniciar(self):
-        self.imagen ="Dios.jpg"
+        self.imagen ="primer_enemigo.png"
+        self.x = -1035
+        self.y = -110
         self.direccion=-1
         self.espejado=True
     
-    def actualizar(self):
+    """def actualizar(self):
         #Funcion que permite el movimiento de el enemigo
         if self.x <= -300:
             self.direccion=1
@@ -120,13 +97,13 @@ class Enemigo(pilasengine.actores.Actor):
             self.direccion=-1
             self.espejado = True
         self.x+=self.direccion * 5  
-        
+        """
 class MiMunicion(pilasengine.actores.Actor):
     def iniciar(self):
-        self.imagen= "Bala.png"
+        self.imagen= "espada.png"
         self.espejado=True
 
-"""
+
 class Toxico1(pilasengine.actores.Actor):
 	def iniciar(self):
 		self.imagen = "Enemigo.png"
@@ -199,6 +176,57 @@ class Lava5(pilasengine.actores.Actor):
 		self.x = 1935
 		self.y = -178
 
+def volver1():
+	global personaje
+	print "Hola"
+
+def volver2():
+	global personaje
+	print "Chau"
+
+
+def volver3():
+	global personaje
+	print "Anime"
+
+def volver4():
+	global personaje
+	print "Funciona"
+
+def volver5():
+	global personaje
+	print "Vamos Bien"
+
+def volver6():
+	global personaje
+	print "Segui Asi"
+
+
+def volver7():
+	global personaje
+	print "AAAAAAAAAAAA"
+
+def volver8():
+	global personaje
+	print "Don Bosco"
+
+def volver9():
+	global personaje
+	print "Vicio"
+
+
+def volver10():
+	global personaje
+	print "HP"
+
+
+def volver11():
+	global personaje
+	print "Chotovo"
+
+def volver12():
+	global personaje
+	print "NIGGA"
 
 def victoria(personaje, lanzador):
     intro = pilas.musica.cargar("Hola.mp3")
@@ -225,9 +253,9 @@ def perder():
         personaje.eliminar()
         pilas.avisar("Perdiste")
 
-#pilas.actores.vincular(MiMunicion)
+pilas.actores.vincular(MiMunicion)
 pilas.actores.vincular(Principal)
-#pilas.actores.vincular(Enemigo)
+pilas.actores.vincular(Enemigo)
 """
 bonus = Golpe(pilas)
 """
@@ -236,14 +264,12 @@ personaje.escala_x = .3
 personaje.escala_y = .3
 personaje.radio_de_colision = personaje.escala*50
 personaje.aprender("PuedeExplotar")
-"""
-lanzador= pilas.actores.Enemigo()
-lanzador.escala_x= .7
-lanzador.escala_y= .7
-lanzador.y=50
-lanzador.x=150
-"""
 
+lanzador= pilas.actores.Enemigo()
+lanzador.escala_x= .3
+lanzador.escala_y= .3
+
+# Todas estas clases pertenecen a los obstaculos del mapa
 toxico = Toxico1(pilas)
 toxico.escala_x = .0
 toxico.escala_y = .0
@@ -316,63 +342,11 @@ lava5.escala_y = .0
 rectangulo = pilas.fisica.Rectangulo(0, 0, 100, 100, sensor=True, dinamica=False)
 lava5.figura_de_colision = rectangulo
 
-#pilas.colisiones.agregar(personaje, lanzador, victoria)  
+lanzador.aprender("Disparar", municion="MiMunicion", angulo_salida_disparo = 180 ,grupo_enemigos = personaje, cuando_elimina_enemigo = perder)
 
-#lanzador.aprender("Disparar", municion="MiMunicion", grupo_enemigos = personaje, cuando_elimina_enemigo = perder)
+pilas.tareas.agregar(1.2,tirar)
 
-#pilas.tareas.agregar(0.5,tirar)
-
-def volver1():
-	global personaje
-	print "Hola"
-
-def volver2():
-	global personaje
-	print "Chau"
-
-
-def volver3():
-	global personaje
-	print "Anime"
-
-def volver4():
-	global personaje
-	print "Funciona"
-
-def volver5():
-	global personaje
-	print "Vamos Bien"
-
-def volver6():
-	global personaje
-	print "Segui Asi"
-
-
-def volver7():
-	global personaje
-	print "AAAAAAAAAAAA"
-
-def volver8():
-	global personaje
-	print "Don Bosco"
-
-def volver9():
-	global personaje
-	print "Vicio"
-
-
-def volver10():
-	global personaje
-	print "HP"
-
-
-def volver11():
-	global personaje
-	print "Chotovo"
-
-def volver12():
-	global personaje
-	print "NIGGA"
+pilas.colisiones.agregar(personaje, lanzador, victoria)
 
 pilas.colisiones.agregar(personaje, toxico, volver1)
 
