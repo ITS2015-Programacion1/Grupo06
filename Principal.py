@@ -103,13 +103,23 @@ class MiMunicion(pilasengine.actores.Actor):
         self.imagen= "espada.png"
         self.espejado=True
 
+
 class Enemigo2(pilasengine.actores.Actor):
     def iniciar(self):
-        self.imagen ="a.png"
-        self.x = -778
-        self.y = -183
+        self.imagen ="Enemigo.png"
+        self.x = 1330
+        self.y = -55
         self.direccion=-1
-        self.espejado=True
+        self.espejado = True
+
+    def actualizar(self):
+        #Funcion que permite el movimiento de el enemigo
+        if self.x <= 1330 :
+            self.direccion=1
+            self.espejado = False
+        if self.x >= 1766:
+            self.direccion=-1
+        self.x+=self.direccion * 5
 
 class MiMunicion2(pilasengine.actores.Actor):
     def iniciar(self):
@@ -118,31 +128,31 @@ class MiMunicion2(pilasengine.actores.Actor):
 
 class Toxico1(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen = "Enemigo.png"
+		self.imagen = "index.jpeg"
 		self.x = -2770
 		self.y = -260
 
 class Toxico2(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="Pelota.png"
+		self.imagen="index.jpeg"
 		self.x =-2030
 		self.y =-220
 
 class Toxico3(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="basura.jpg"
+		self.imagen="index.jpeg"
 		self.x = -1657
 		self.y = -215
 
 class Toxico4(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="Bala.png"
+		self.imagen="index.jpeg"
 		self.x = -1488
 		self.y = -215
 
 class Toxico5(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="Dios.jpg"
+		self.imagen="index.jpeg"
 		self.x = -1332
 		self.y = -230
 
@@ -154,37 +164,37 @@ class Toxico6(pilasengine.actores.Actor):
 
 class Toxico7(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="espada.png"
+		self.imagen="index.jpeg"
 		self.x = -945
 		self.y = -230
 
 class Lava1(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="Cara.jpg"
+		self.imagen="index.jpeg"
 		self.x = 224
 		self.y = -228
 
 class Lava2(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="logo.jpg"
+		self.imagen="index.jpeg"
 		self.x = 481
 		self.y = -216
 
 class Lava3(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="hola.jpg"
+		self.imagen="index.jpeg"
 		self.x = 690
 		self.y = -216
 
 class Lava4(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="pingu.png"
+		self.imagen="index.jpeg"
 		self.x = 1050
 		self.y = -216
 
 class Lava5(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="imagen.png"
+		self.imagen="index.jpeg"
 		self.x = 1935
 		self.y = -178
 
@@ -288,8 +298,8 @@ enemigo.escala_x= .3
 enemigo.escala_y= .3
 
 enemigo2 = pilas.actores.Enemigo2()
-enemigo2.escala_x= .3
-enemigo2.escala_y= .3
+enemigo2.escala_x= .2
+enemigo2.escala_y= .2
 
 # Todas estas clases pertenecen a los obstaculos del mapa
 toxico = Toxico1(pilas)
