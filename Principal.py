@@ -71,14 +71,21 @@ class Principal(pilasengine.actores.Actor):
                 self.hacer("SaltarUnaVez")
  
         pilas.camara.x=self.x
-
 """
 class Golpe(pilasengine.actores.Actor):
 	def iniciar(self):
-		self.imagen="espada.png"
-		personaje.hide()
-"""
+		self.imagen = "espada.png"
 
+	def actualizar(self):
+		global personaje
+		personaje.escala_x = .0
+		personaje.escala_y = .0
+		secundario.mostrar()
+		time.sleep(2)
+		secundario.eliminar()
+		personaje.escala_x = .3
+		personaje.escala_y = .3
+"""
 #Esta clase es la del enemigo
 class Enemigo1(pilasengine.actores.Actor):
     def iniciar(self):
@@ -119,6 +126,8 @@ class Enemigo2(pilasengine.actores.Actor):
             self.espejado = False
         if self.x >= 1766:
             self.direccion=-1
+            self.espejado = True
+            self.angulo_salida_disparo = 180
         self.x+=self.direccion * 5
 
 class MiMunicion2(pilasengine.actores.Actor):
@@ -198,57 +207,72 @@ class Lava5(pilasengine.actores.Actor):
 		self.x = 1935
 		self.y = -178
 
+class Ganar(pilasengine.actores.Actor):
+	def iniciar(self):
+		self.imagen="index.jpeg"
+		self.x = 3570
+		self.y = -87
+
 def volver1():
 	global personaje
-	print "Hola"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver2():
 	global personaje
-	print "Chau"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 
 def volver3():
 	global personaje
-	print "Anime"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver4():
 	global personaje
-	print "Funciona"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver5():
 	global personaje
-	print "Vamos Bien"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver6():
 	global personaje
-	print "Segui Asi"
-
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver7():
 	global personaje
-	print "AAAAAAAAAAAA"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver8():
 	global personaje
-	print "Don Bosco"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver9():
 	global personaje
-	print "Vicio"
-
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver10():
 	global personaje
-	print "HP"
-
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver11():
 	global personaje
-	print "Chotovo"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def volver12():
 	global personaje
-	print "NIGGA"
+	personaje.figura.x = -3574
+	personaje.figura.y = -119
 
 def victoria(personaje, lanzador):
     intro = pilas.musica.cargar("Hola.mp3")
@@ -265,6 +289,8 @@ def tirar():
 def tirar2():
     enemigo2.disparar()
     return True
+    time.sleep(4)
+    municion.eliminar()
 
 def perder():
     global personaje
@@ -284,6 +310,9 @@ pilas.actores.vincular(Principal)
 pilas.actores.vincular(Enemigo1)
 pilas.actores.vincular(Enemigo2)
 pilas.actores.vincular(MiMunicion2)
+pilas.actores.vincular(Ganar)
+#pilas.actores.vincular(Golpe)
+
 """
 bonus = Golpe(pilas)
 """
@@ -300,7 +329,11 @@ enemigo.escala_y= .3
 enemigo2 = pilas.actores.Enemigo2()
 enemigo2.escala_x= .2
 enemigo2.escala_y= .2
-
+"""
+secundario = pilas.actores.Golpe()
+secundario.escala_x= .2
+secundario.escala_y= .2
+"""
 # Todas estas clases pertenecen a los obstaculos del mapa
 toxico = Toxico1(pilas)
 toxico.escala_x = .0
@@ -373,6 +406,10 @@ lava5.escala_x = .0
 lava5.escala_y = .0
 rectangulo = pilas.fisica.Rectangulo(0, 0, 100, 100, sensor=True, dinamica=False)
 lava5.figura_de_colision = rectangulo
+
+ganador = pilas.actores.Ganar()
+ganador.escala_x = .3
+ganador.escala_y = .3
 
 enemigo.aprender("Disparar", municion="MiMunicion", angulo_salida_disparo = 180 ,grupo_enemigos = personaje, cuando_elimina_enemigo = perder)
 
