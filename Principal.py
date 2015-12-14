@@ -83,7 +83,11 @@ class Principal(pilasengine.actores.Actor):
             self.figura.y +=7
             if not self.saltando:
                 self.hacer("SaltarUnaVez")
-            
+    
+def victoria(personaje, lanzador):
+    intro = pilas.musica.cargar("hola.mp3")
+    intro.reproducir(repetir=True)
+    
 
 
 lanzador= enemigo(pilas)
@@ -95,6 +99,8 @@ lanzador.x=150
 personaje = Principal(pilas)
 personaje.escala_x = .3
 personaje.escala_y = .3
+
+pilas.colisiones.agregar(personaje, lanzador, victoria)
 
 pilas.comportamientos.vincular(SaltarUnaVez)
 
