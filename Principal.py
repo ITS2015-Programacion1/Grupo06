@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import pilasengine
 import time
-import Saltar
 
 pilas = pilasengine.iniciar()
 
@@ -10,8 +9,35 @@ mapa = pilas.actores.MapaTiled('plataformas.tmx', densidad=0,
             restitucion=0, friccion=0, amortiguacion=0)
 
 
-pilas.comportamientos.vincular(Saltar.Subir)
+class SaltarUnaVez(pilas.comportamientos.Comportamiento):
 
+    def iniciar(self, receptor, velocidad_inicial=10, cuando_termina=None):
+        super(SaltarUnaVez, self).iniciar(receptor)
+        self.velocidad_inicial = velocidad_inicial
+        self.cuando_termina = cuando_termina
+        self.sonido_saltar = self.pilas.sonidos.cargar("audio/saltar.wav")
+        self.suelo = int(self.receptor.y)
+        self.velocidad = self.velocidad_inicial
+        self.sonido_saltar.reproducir()
+        self.velocidad_aux = self.velocidad_inicial
+        self.receptor.saltando = False
+
+    def actualizar(self):
+        self.receptor.y += self.velocidad
+        self.velocidad -= 0.3
+
+        if self.receptor.y <= self.suelo:
+            self.velocidad_aux /= 3.5
+            self.velocidad = self.velocidad_aux
+
+            if self.velocidad_aux <= 1:
+                # Si toca el suelo
+                self.receptor.y = self.suelo
+                if self.cuando_termina:
+                    self.cuando_termina()
+                self.receptor.saltando = False
+                return True
+                     
 #Esta clase es la del enemigo
 class enemigo(pilasengine.actores.Actor):
     def iniciar(self):
@@ -27,7 +53,10 @@ class enemigo(pilasengine.actores.Actor):
             self.direccion=-1
             self.espejado = True
         self.x+=self.direccion * 5  
-
+    def largar(self):
+        lanzador.disparar()
+        
+        
 #Esta clase crea al Actor   
 class Principal(pilasengine.actores.Actor):
     def iniciar(self):
@@ -36,32 +65,27 @@ class Principal(pilasengine.actores.Actor):
         self.figura.sin_rotacion = True
         self.figura.escala_de_gravedad = 2
         self.sensor_pies = pilas.fisica.Rectangulo(self.x, self.y, 2, 5, sensor=True, dinamica=False)
-
+        self.saltando = False
+        
+        
     def actualizar(self):
         velocidad = 10
         salto = 10
         self.x = self.figura.x
         self.y = self.figura.y
-        if self.pilas.control.derecha:
-            self.figura.velocidad_x = velocidad
-        elif self.pilas.control.izquierda:
-            self.figura.velocidad_x = -velocidad
-        else:
-            self.figura.velocidad_x = 0
+        if pilas.control.izquierda:
+            self.figura.x -= 5
 
-        if self.esta_pisando_el_suelo():
-            if self.pilas.control.arriba and int(self.figura.velocidad_y) <= 0:
-                self.figura.impulsar(0, 5)
-        self.sensor_pies.x = self.x
-        self.sensor_pies.y = self.y - 20
-        
-    def esta_pisando_el_suelo(self):
-        return len(self.sensor_pies.figuras_en_contacto) > 0
-   
-def Vida_menos(lanzador, personaje):
-        personaje.eliminar()
-        pilas.avisar("Perdiste")
-    
+        if pilas.control.derecha:
+            self.figura.x += 5
+            
+        if pilas.control.arriba:
+            self.figura.y +=7
+            if not self.saltando:
+                self.hacer("SaltarUnaVez")
+            
+
+
 lanzador= enemigo(pilas)
 lanzador.escala_x= .7
 lanzador.escala_y= .7
@@ -72,6 +96,6 @@ personaje = Principal(pilas)
 personaje.escala_x = .3
 personaje.escala_y = .3
 
-pilas.colisiones.agregar(lanzador, personaje, Vida_menos)
+pilas.comportamientos.vincular(SaltarUnaVez)
 
 pilas.ejecutar()
