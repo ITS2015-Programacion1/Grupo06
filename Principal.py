@@ -39,7 +39,7 @@ class SaltarUnaVez(pilas.comportamientos.Comportamiento):
                 return True
                      
 #Esta clase es la del enemigo
-class enemigo(pilasengine.actores.Actor):
+class Enemigo(pilasengine.actores.Actor):
     def iniciar(self):
         self.imagen ="Dios.jpg"
         self.direccion=-1
@@ -90,7 +90,7 @@ def victoria(personaje, lanzador):
     
 
 
-lanzador= enemigo(pilas)
+lanzador= Enemigo(pilas)
 lanzador.escala_x= .7
 lanzador.escala_y= .7
 lanzador.y=50
@@ -101,6 +101,16 @@ personaje.escala_x = .3
 personaje.escala_y = .3
 
 pilas.colisiones.agregar(personaje, lanzador, victoria)
+
+lanzador.aprender("Disparar")
+
+def tirar():
+    lanzador.disparar()
+    return True
+
+pilas.tareas.agregar(0.5,tirar)
+
+lanzador.aprender("Disparar", municion="Bala")
 
 pilas.comportamientos.vincular(SaltarUnaVez)
 
